@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #0b132b;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Background animated elements */
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .circle {
+            position: absolute;
+            background: rgba(255, 204, 0, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .circle:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-duration: 25s;
+        }
+
+        .circle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            right: 15%;
+            animation-duration: 20s;
+        }
+
+        .circle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 40%;
+            right: 10%;
+            animation-duration: 15s;
+        }
+
+        .circle:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            bottom: 10%;
+            left: 20%;
+            animation-duration: 22s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0.5;
+            }
+            25% {
+                transform: translate(100px, 50px) rotate(90deg);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translate(50px, 100px) rotate(180deg);
+                opacity: 0.5;
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(270deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+                opacity: 0.5;
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 25px; /* Increased border radius for rounder corners */
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease-in-out;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.8s forwards ease-out;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container h2 {
+            color: #ffcc00;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .container h2::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: #ffcc00;
+            border-radius: 3px; /* Rounded line under title */
+            animation: expandLine 1.5s forwards ease-in-out;
+        }
+
+        @keyframes expandLine {
+            from { width: 0; }
+            to { width: 40px; }
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 30px; /* Fully rounded input fields */
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            transform: translateX(-10px);
+            opacity: 0;
+            animation: slideRight 0.5s forwards ease-out;
+            animation-delay: 0.3s;
+            padding-left: 20px; /* Add more padding on the left for rounded inputs */
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        }
+
+        .password-container input {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes slideRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        input::placeholder {
+            color: #ddd;
+            font-style: italic;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 20px; /* Adjusted for rounded corners */
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #ffcc00;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards ease-out;
+            animation-delay: 0.7s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #ff5733;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 30px; /* Fully rounded button */
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 15px;
+            transform: translateY(10px);
+            opacity: 0;
+            animation: slideUp 0.5s forwards ease-out;
+            animation-delay: 0.9s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            background: #c70039;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 87, 51, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: -100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: buttonShine 3s infinite;
+        }
+
+        @keyframes buttonShine {
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .flash {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 20px;
+    margin: 10px 0;
+    animation: flashMessage 0.8s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.flash.success {
+    color: #ffffff;
+    background: rgba(76, 175, 80, 0.4);
+}
+
+.flash.danger {
+    color: #ffffff;
+    background: rgba(255, 77, 77, 0.4);
+}
+
+@keyframes flashMessage {
+    0%, 100% { transform: translateX(0); opacity: 1; }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); opacity: 1; }
+    20%, 40%, 60%, 80% { transform: translateX(5px); opacity: 1; }
+}
+        p {
+            font-size: 14px;
+            color: #f1f1f1;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards ease-out;
+            animation-delay: 1.1s;
+        }
+
+        p a {
+            color: #00ffcc;
+            font-weight: bold;
+            text-decoration: none;
+            position: relative;
+        }
+
+        p a::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00ffcc;
+            transition: width 0.3s ease;
+            border-radius: 1px; /* Slightly rounded underline */
+        }
+
+        p a:hover::after {
+            width: 100%;
+        }
+
+        /* Loader animation for login */
+        .loader {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid white;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: rotate 1s infinite linear;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+                padding: 1.5rem;
+            }
+        }
+        
+
+        .google-login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            background: white;
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        
+        .google-login:hover {
+            background: #f5f5f5;
+        }
+        
+        .google-login img {
+            margin-right: 8px;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Background animated elements -->
+    <div class="background-animation">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <div class="container">
+        <h2>Login</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+        <form method="POST" id="loginForm">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="username" placeholder="Username" required>
+            <div class="password-container">
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <span class="toggle-password" onclick="togglePassword()">👁️</span>
+            </div>
+            <button type="submit" id="loginButton">
+                <span class="button-text">Login</span>
+                <span class="loader"></span>
+            </button>
+           
+        </form>
+
+        <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+       
+<p>Forgot your password? <a href="{{ url_for('reset_password') }}">Reset Password</a></p>
+    </div>
+    
+    <script>
+        // Display alert if there is a flash message
+    window.onload = function() {
+        const flashMessages = document.querySelectorAll('.flash.danger');
+        flashMessages.forEach(message => {
+            alert(message.innerText); // Show JavaScript alert
+        });
+    };
+        // Password visibility toggle
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+
+        // Login animation
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const button = document.getElementById('loginButton');
+            const buttonText = button.querySelector('.button-text');
+            const loader = button.querySelector('.loader');
+            
+            // Show loading animation
+            buttonText.style.display = 'none';
+            loader.style.display = 'block';
+            
+            // We're not preventing default form submission since we want it to actually submit
+            // This is just for visual effect
+        });
+
+        // Animation for inputs on focus
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

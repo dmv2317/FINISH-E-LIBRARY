@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback - E-Library</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+      }
+
+      /* Header Section */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: azure;
+        padding: 15px 20px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        flex-wrap: wrap;
+      }
+
+      /* Logo */
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+      .logo img {
+        width: 80px;
+        border-radius: 50px;
+        margin-right: 15px;
+      }
+
+      nav {
+        display: flex;
+        gap: 20px;
+      }
+      nav a {
+        text-decoration: none;
+        color: #333;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      nav a:hover {
+        color: #ff477e;
+        transform: scale(1.1);
+      }
+
+      .feedback {
+        background-color: white;
+        color: black;
+      }
+
+      /* Search Bar */
+      .search-bar {
+        display: flex;
+        align-items: center;
+      }
+      .search-bar input {
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 5px 0 0 5px;
+        outline: none;
+        width: 200px;
+      }
+      .search-bar button {
+        padding: 10px;
+        background-color: #34495e;
+        color: white;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .search-bar button:hover {
+        background-color: #2c3e50;
+      }
+
+      .feedback-container {
+        margin: 20px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .feedback-container h2 {
+        color: #2c3e50;
+      }
+      .feedback-form {
+        margin-top: 30px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .feedback-form input,
+      .feedback-form textarea,
+      .feedback-form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        font-size: 1em;
+      }
+      .feedback-form button {
+        padding: 10px 20px;
+        background-color: #34495e;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .feedback-form button:hover {
+        background-color: #2c3e50;
+      }
+
+      /* Star Rating Styles */
+      .star-rating {
+        margin-bottom: 20px;
+      }
+      .stars {
+        font-size: 1.8em;
+        cursor: pointer;
+        color: #ddd;
+      }
+      .stars .fa-star.active {
+        color: #ffcc00;
+      }
+      .stars .fa-star:hover,
+      .stars .fa-star:hover ~ .fa-star {
+        color: #ffcc00;
+      }
+      .stars {
+        direction: rtl;
+        unicode-bidi: bidi-override;
+        display: inline-block;
+      }
+      .recent-feedback {
+        margin-top: 30px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .feedback-item {
+        margin-bottom: 15px;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+      }
+      .feedback-item:last-child {
+        border-bottom: none;
+      }
+      .feedback-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .feedback-stars {
+        color: #ffcc00;
+      }
+      .feedback-book {
+        color: #666;
+        font-style: italic;
+      }
+      .feedback-message {
+        line-height: 1.5;
+      }
+      .feedback-date {
+        color: #999;
+        font-size: 0.8em;
+        text-align: right;
+      }
+      .feedback-category {
+        padding: 5px 10px;
+        border-radius: 15px;
+        background-color: #e0e0ff;
+        font-size: 0.8em;
+        margin-left: 10px;
+      }
+      .flash-messages {
+        margin: 20px;
+        padding: 15px;
+        border-radius: 5px;
+      }
+      .flash-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .flash-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="/static/images/logo.png" alt="E-Library Logo" />
+      </div>
+
+      <nav>
+        <a href="/home">Home</a>
+        <a href="/about">About</a>
+        <a href="/my-library">My Library</a>
+        <a href="#" class="feedback">Feedback</a>
+        <a href="/contact">Contact Us</a>
+        <a href="/logout">Logout</a>
+      </nav>
+    </header>
+
+    <div class="feedback-container">
+      <h2>We Value Your Feedback</h2>
+      <p>
+        Please let us know how we can improve our library service or rate your
+        favorite books. Your feedback is highly appreciated!
+      </p>
+    </div>
+
+    <!-- Flash messages section -->
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %}
+    <div class="flash-messages flash-{{ category }}">{{ message }}</div>
+    {% endfor %} {% endif %} {% endwith %}
+
+    <div class="feedback-form">
+      <h2>Submit Your Feedback</h2>
+      <form method="POST" action="{{ url_for('feedback') }}">
+        {{ form.csrf_token }}
+
+        <div class="form-group">
+          <label>Feedback Type:</label>
+          {{ form.feedback_type(class="form-control") }}
+        </div>
+
+        <div class="form-group" id="book_selection" style="display: none">
+          <label>Select Book:</label>
+          {{ form.book_id(class="form-control") }}
+        </div>
+
+        <div class="form-group" id="rating_section" style="display: none">
+          <label>Rate This Book:</label>
+          <div class="star-rating">
+            <div class="stars">
+              <i class="fas fa-star" data-value="5"></i>
+              <i class="fas fa-star" data-value="4"></i>
+              <i class="fas fa-star" data-value="3"></i>
+              <i class="fas fa-star" data-value="2"></i>
+              <i class="fas fa-star" data-value="1"></i>
+            </div>
+            {{ form.rating(type="hidden", id="rating") }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Your Feedback:</label>
+          {{ form.message(class="form-control", rows=4, placeholder="Write your
+          feedback here...") }}
+        </div>
+
+        <button type="submit">{{ form.submit.label }}</button>
+      </form>
+    </div>
+
+    <div class="recent-feedback">
+      <h2>Recent Feedback</h2>
+      {% if recent_feedbacks %} {% for fb in recent_feedbacks %}
+      <div class="feedback-item">
+        <div class="feedback-header">
+          <div>
+            <strong>{{ fb.user.username }}</strong>
+            <span class="feedback-category">{{ fb.feedback_type }}</span>
+          </div>
+          {% if fb.rating %}
+          <div class="feedback-stars">
+            {% for i in range(fb.rating) %}★{% endfor %} {% for i in range(5 -
+            fb.rating) %}☆{% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% if fb.book %}
+        <div class="feedback-book">{{ fb.book.title }}</div>
+        {% endif %}
+        <div class="feedback-message">{{ fb.message }}</div>
+        <div class="feedback-date">
+          {{ fb.created_at.strftime('%B %d, %Y') }}
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <p>No feedback yet. Be the first to share your thoughts!</p>
+      {% endif %}
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Star rating logic
+        const stars = document.querySelectorAll(".stars .fa-star");
+        const ratingInput = document.getElementById("rating");
+
+        stars.forEach((star) => {
+          star.addEventListener("click", function () {
+            const value = this.getAttribute("data-value");
+            ratingInput.value = value;
+
+            stars.forEach((s) => {
+              if (s.getAttribute("data-value") <= value) {
+                s.classList.add("active");
+              } else {
+                s.classList.remove("active");
+              }
+            });
+          });
+        });
+
+        // Show/hide book selection and rating based on feedback type
+        const feedbackType = document.getElementById("feedback_type");
+        const bookSelection = document.getElementById("book_selection");
+        const ratingSection = document.getElementById("rating_section");
+
+        feedbackType.addEventListener("change", function () {
+          if (this.value === "book_review") {
+            bookSelection.style.display = "block";
+            ratingSection.style.display = "block";
+          } else {
+            bookSelection.style.display = "none";
+            ratingSection.style.display = "none";
+          }
+        });
+
+        // Initialize the form display based on initial value
+        if (feedbackType.value === "book_review") {
+          bookSelection.style.display = "block";
+          ratingSection.style.display = "block";
+        }
+      });
+
+      function search() {
+        const query = document.querySelector(".search-bar input").value;
+        alert(
+          query ? `Searching for: ${query}` : "Please enter a search term."
+        );
+      }
+    </script>
+  </body>
+</html>

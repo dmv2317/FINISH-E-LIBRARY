@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fiction - E-Library</title>
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff;
+        padding: 10px 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+      .logo img {
+        width: 60px;
+        border-radius: 10px;
+        margin-right: 15px;
+      }
+      .menu-toggle {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      nav a {
+        text-decoration: none;
+        color: #333;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      nav a:hover {
+        color: #ff477e;
+        transform: scale(1.1);
+      }
+      /* Responsive Menu */
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        background: white;
+        padding: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        min-width: 180px;
+      }
+      .nav-links.show {
+        display: block;
+      }
+      .nav-links li {
+        padding: 10px;
+        list-style: none;
+        border-bottom: 1px solid #ddd;
+      }
+      .nav-links a {
+        display: block;
+        color: black;
+        font-weight: bold;
+      }
+      /* Search Bar */
+      .search-bar {
+        position: relative;
+        max-width: 300px;
+        flex-grow: 1;
+      }
+      .search-bar input {
+        width: 100%;
+        padding: 10px 15px 10px 40px;
+        border-radius: 50px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        outline: none;
+      }
+      .search-bar .icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+        font-size: 18px;
+      }
+      /* Books Section */
+      .category-books {
+        margin: 20px;
+        padding: 20px;
+      }
+      .category-books h2 {
+        text-align: center;
+      }
+      .books-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 10px;
+      }
+      .book {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .book:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      .book img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+      .download-btn {
+        display: block;
+        background: #2f2cdf;
+        color: white;
+        padding: 8px;
+        border-radius: 5px;
+        margin-top: 10px;
+        text-decoration: none;
+      }
+      .download-btn:hover {
+        background: #1e1bb0;
+      }
+      footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #2c3e50;
+        color: white;
+        margin-top: 30px;
+      }
+      /* Responsive */
+      @media (max-width: 768px) {
+        nav {
+          display: none;
+        }
+        .menu-toggle {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="/static/images/logo.png" alt="E-Library Logo" />
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      </div>
+
+      <nav>
+        <a href="/home">Home</a>
+        <a href="/about">About</a>
+        <a href="/my-library">My Library</a>
+        <a href="/feedback">Feedback</a>
+        <a href="/contact">Contact</a>
+      </nav>
+    </header>
+
+    <div class="category-books">
+      <h2>Fiction Books</h2>
+      <div class="books-container" id="booksContainer"></div>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 E-Library. All rights reserved.</p>
+    </footer>
+
+    <script>
+      function toggleMenu() {
+        document.getElementById("navMenu").classList.toggle("show");
+      }
+
+      function fetchBooks() {
+        fetch(`/category/fiction`)
+          .then((response) => response.json())
+          .then((books) => {
+            const booksContainer = document.getElementById("booksContainer");
+            booksContainer.innerHTML = "";
+
+            if (!Array.isArray(books) || books.length === 0) {
+              booksContainer.innerHTML = "<p>No books found.</p>";
+              return;
+            }
+
+            books.forEach((book) => {
+              if (!book.id || !book.title || !book.author) {
+                console.error("Invalid book data:", book);
+                return;
+              }
+
+              const bookElement = document.createElement("div");
+              bookElement.classList.add("book");
+              bookElement.innerHTML = `
+                    <img src="${
+                      book.image_url || "/static/images/default-book-cover.jpg"
+                    }" alt="${book.title} Cover">
+                    <h3>${book.title}</h3>
+                    <p><strong>Author:</strong> ${book.author}</p>
+                    <a href="/download/${
+                      book.id
+                    }" class="download-btn">Download</a>
+                  `;
+              booksContainer.appendChild(bookElement);
+            });
+          })
+          .catch((error) => console.error("Error fetching books:", error));
+      }
+
+      document.addEventListener("DOMContentLoaded", fetchBooks);
+    </script>
+  </body>
+</html>

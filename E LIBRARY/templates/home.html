@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Library | Explore Books in All Categories</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+
+    <style>
+      /* General Styles */
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        scroll-behavior: smooth;
+      }
+
+      /* Header Section */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: azure;
+        padding: 15px 20px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        flex-wrap: wrap;
+      }
+
+      /* Logo */
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+      .logo img {
+        width: 80px;
+        border-radius: 50px;
+        margin-right: 15px;
+      }
+      /* Search Bar */
+      .search-bar {
+        position: relative;
+        flex-grow: 1;
+        max-width: 300px;
+      }
+      .search-bar form {
+        width: 100%;
+        position: relative;
+      }
+      .search-bar input {
+        width: 100%;
+        padding: 10px 15px 10px 40px;
+        border-radius: 50px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: box-shadow 0.3s;
+        font-size: 14px;
+      }
+      .search-bar input:focus {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      .search-bar .icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+        font-size: 18px;
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      /* Navigation */
+      nav {
+        display: flex;
+        gap: 20px;
+      }
+      nav a {
+        text-decoration: none;
+        color: #333;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      nav a:hover {
+        color: #ff477e;
+        transform: scale(1.1);
+      }
+
+      /* Mobile Menu */
+      .menu-toggle {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      /* Categories Section */
+      section.categories {
+        margin: 20px;
+        padding: 20px;
+        text-align: center;
+      }
+      .categories h2 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        color: #444;
+      }
+      .categories-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 25px;
+        max-width: 1200px;
+        margin: auto;
+        padding: 10px;
+      }
+
+      /* Category Cards */
+      .category {
+        background-color: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .category:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      .category img {
+        width: 100%;
+        height: auto;
+        max-height: 180px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+
+      /* Responsive Design */
+      @media screen and (max-width: 768px) {
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .menu-toggle {
+          display: block;
+        }
+        nav {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+          background: white;
+          padding: 10px 0;
+          position: absolute;
+          top: 60px;
+          left: 0;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        nav a {
+          padding: 15px;
+          text-align: center;
+          width: 100%;
+          display: block;
+        }
+        .show-menu {
+          display: flex !important;
+          flex-direction: column;
+        }
+      }
+
+      /* Books Grid */
+      .books-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+      }
+      .book-item {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 15px;
+        background-color: #2c3e50;
+        color: white;
+        margin-top: 30px;
+      }
+
+      /* Search Results Dropdown */
+      .search-results {
+        position: absolute;
+        width: 100%;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        z-index: 100;
+      }
+      .search-results.active {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .search-result-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+      }
+      .search-result-item:hover {
+        background-color: #f5f5f5;
+      }
+      .search-result-item img {
+        width: 40px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+      }
+      .search-result-item .book-info {
+        flex-grow: 1;
+        text-align: left;
+      }
+      .search-result-item .book-title {
+        font-weight: bold;
+        margin-bottom: 2px;
+      }
+      .search-result-item .book-author {
+        font-size: 0.8em;
+        color: #666;
+      }
+      .search-result-item .book-rating {
+        color: #ff9800;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header>
+      <div class="logo">
+        <img src="/static/images/logo.png" alt="E-Library Logo" />
+        <span class="menu-toggle" onclick="toggleMenu()">☰</span>
+      </div>
+      <div class="search-bar">
+        <form action="/search" method="GET" id="search-form">
+          <i class="fas fa-search icon"></i>
+          <input
+            type="text"
+            name="query"
+            id="search-input"
+            placeholder="Search for books..."
+          />
+        </form>
+        <div class="search-results" id="search-dropdown">
+          <!-- This will be populated with top-rated books -->
+        </div>
+      </div>
+      <nav id="nav-menu">
+        <a href="/home">Home</a>
+        <a href="/about">About</a>
+        <a href="/my-library">My Library</a>
+        <a href="/feedback">Feedback</a>
+        <a href="/contact">Contact Us</a>
+        <a href="/logout" class="logout-btn">Logout</a>
+      </nav>
+    </header>
+
+    <!-- Categories Section -->
+    <section class="categories">
+      <h2>Explore Categories</h2>
+      <div class="categories-container">
+        <div class="category" onclick="window.location.href='/fantasy'">
+          <img src="/static/images/fantasy.webp" alt="Fantasy" />
+          <p>Fantasy</p>
+        </div>
+        <div class="category" onclick="window.location.href='/science'">
+          <img src="/static/images/science.avif" alt="Science" />
+          <p>Science</p>
+        </div>
+        <div class="category" onclick="window.location.href='/fiction'">
+          <img src="/static/images/fiction.jpg" alt="Fiction" />
+          <p>Fiction</p>
+        </div>
+        <div class="category" onclick="window.location.href='/biographies'">
+          <img src="/static/images/biography.webp" alt="biographies" />
+          <p>Biographies</p>
+        </div>
+        <div class="category" onclick="window.location.href='/history'">
+          <img src="/static/images/history.jpg" alt="History" />
+          <p>History</p>
+        </div>
+        <div class="category" onclick="window.location.href='/mystery'">
+          <img src="/static/images/mystery.jpg" alt="Mystery" />
+          <p>Mystery</p>
+        </div>
+        <div class="category" onclick="window.location.href='/astronomy'">
+          <img src="/static/images/astronomy_1.webp" alt="astronomy" />
+          <p>astronomy</p>
+        </div>
+        <div class="category" onclick="window.location.href='/technology'">
+          <img src="/static/images/technology.jpg" alt="Technology" />
+          <p>Technology</p>
+        </div>
+        <div class="category" onclick="window.location.href='/comics'">
+          <img src="/static/images/comic.jpeg" alt="Comics" />
+          <p>Comics</p>
+        </div>
+        <div class="category" onclick="window.location.href='/medical science'">
+          <img
+            src="/static/images/medical science.webp"
+            alt="medical science"
+          />
+          <p>Medical Science</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2025 E-Library. All rights reserved.</p>
+    </footer>
+
+    <script>
+      function toggleMenu() {
+        document.getElementById("nav-menu").classList.toggle("show-menu");
+      }
+
+      window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("logged_in") === "true") {
+          alert("Login successful! Welcome to E-Library.");
+        }
+
+        // Set up search functionality
+        setupSearch();
+      };
+
+      function setupSearch() {
+        const searchInput = document.getElementById("search-input");
+        const searchDropdown = document.getElementById("search-dropdown");
+        const searchForm = document.getElementById("search-form");
+
+        // When the search input is clicked
+        searchInput.addEventListener("click", function (e) {
+          // Prevent the form from submitting
+          e.preventDefault();
+
+          // Fetch top-rated books and display them
+          fetchTopRatedBooks();
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", function (e) {
+          if (
+            !searchInput.contains(e.target) &&
+            !searchDropdown.contains(e.target)
+          ) {
+            searchDropdown.classList.remove("active");
+          }
+        });
+
+        // Search form submission
+        searchForm.addEventListener("submit", function (e) {
+          const query = searchInput.value.trim();
+          if (!query) {
+            e.preventDefault(); // Prevent form submission if query is empty
+            fetchTopRatedBooks(); // Show top-rated books instead
+          }
+        });
+      }
+
+      function fetchTopRatedBooks() {
+        fetch("/top-rated-books")
+          .then((response) => response.json())
+          .then((books) => {
+            displaySearchResults(books);
+          })
+          .catch((error) => {
+            console.error("Error fetching top-rated books:", error);
+          });
+      }
+
+      function displaySearchResults(books) {
+        const searchDropdown = document.getElementById("search-dropdown");
+
+        // Clear previous results
+        searchDropdown.innerHTML = "";
+
+        if (books.length === 0) {
+          searchDropdown.innerHTML =
+            '<div class="search-result-item">No high-rated books found</div>';
+        } else {
+          // Add header
+          const header = document.createElement("div");
+          header.className = "search-result-item";
+          header.innerHTML = "<strong>Top Rated Books</strong>";
+          searchDropdown.appendChild(header);
+
+          // Add book items
+          books.forEach((book) => {
+            const item = document.createElement("div");
+            item.className = "search-result-item";
+            item.onclick = function () {
+              window.location.href = `/book/${book.id}`;
+            };
+
+            const imageUrl =
+              book.image_url || "/static/images/default-book.png";
+            const stars =
+              "★".repeat(Math.round(book.avg_rating)) +
+              "☆".repeat(5 - Math.round(book.avg_rating));
+
+            item.innerHTML = `
+                        <img src="${imageUrl}" alt="${book.title}" onerror="this.src='/static/images/default-book.png'">
+                        <div class="book-info">
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-author">by ${book.author}</div>
+                            <div class="book-rating">${stars} (${book.rating_count})</div>
+                        </div>
+                    `;
+
+            searchDropdown.appendChild(item);
+          });
+        }
+
+        // Show the dropdown
+        searchDropdown.classList.add("active");
+      }
+    </script>
+  </body>
+</html>

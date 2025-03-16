@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Library - E-Library</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+      }
+
+      /* Header Section */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f9f9f9;
+        padding: 10px 20px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo img {
+        width: 100px;
+        height: auto;
+      }
+
+      /* Navigation */
+      nav {
+        display: flex;
+        gap: 15px;
+      }
+      nav a {
+        text-decoration: none;
+        color: black;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      nav a:hover {
+        color: #ff477e;
+        transform: scale(1.1);
+      }
+      .library {
+        background-color: white;
+        color: black;
+      }
+
+      /* Library Container */
+      .library-container {
+        margin: 20px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        animation: fadeInUp 1s ease-in-out;
+      }
+      .library-container h2 {
+        color: #2c3e50;
+      }
+      .book-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      .book-item {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 160px;
+        position: relative;
+      }
+      .book-item img {
+        width: 100px;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+      .book-item p {
+        margin: 10px 0;
+      }
+      .download-btn {
+        background-color: #2c3e50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .download-btn:hover {
+        background-color: #1a252f;
+      }
+
+      /* MODERNIZED UPLOAD FORM */
+      .upload-container {
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        width: 60%;
+        max-width: 700px;
+        margin: 40px auto;
+        transition: all 0.3s ease;
+      }
+
+      .upload-container h2 {
+        color: #222;
+        font-size: 24px;
+        margin-bottom: 25px;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .upload-container h2:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 50px;
+        height: 3px;
+        background: #2f2cdf;
+        border-radius: 2px;
+      }
+
+      .upload-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .input-group {
+        margin-bottom: 5px;
+      }
+
+      .input-group.full-width {
+        grid-column: span 2;
+      }
+
+      .input-group label {
+        font-weight: 500;
+        display: block;
+        margin-bottom: 8px;
+        color: #444;
+        font-size: 14px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #e1e1e1;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+        background-color: #fbfbfd;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #2f2cdf;
+        box-shadow: 0 0 0 3px rgba(47, 44, 223, 0.15);
+      }
+
+      .form-control::placeholder {
+        color: #aaa;
+      }
+
+      /* File Upload Styling */
+      .file-upload {
+        grid-column: span 2;
+        margin: 20px 0;
+      }
+
+      .file-input-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        border: 2px dashed #d1d1d1;
+        border-radius: 14px;
+        background: #fbfbfd;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .file-input-container:hover {
+        border-color: #2f2cdf;
+        background: #f7f7ff;
+      }
+
+      .file-icon {
+        font-size: 40px;
+        color: #2f2cdf;
+        margin-bottom: 15px;
+      }
+
+      .file-input-container p {
+        margin: 5px 0;
+        color: #666;
+      }
+
+      .file-input-container p.primary-text {
+        font-weight: 600;
+        color: #333;
+        font-size: 16px;
+      }
+
+      .file-input-container input[type="file"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      #file-name {
+        text-align: center;
+        margin-top: 15px;
+        color: #2f2cdf;
+        font-weight: 500;
+      }
+
+      /* Upload Button */
+      #upload-btn {
+        grid-column: span 2;
+        background: #2f2cdf;
+        color: white;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
+      #upload-btn:hover {
+        background: #2522be;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(47, 44, 223, 0.2);
+      }
+
+      #upload-btn:active {
+        transform: translateY(0);
+      }
+
+      /* Mobile Responsiveness for Upload Form */
+      @media (max-width: 768px) {
+        .upload-container {
+          width: 90%;
+          padding: 20px;
+        }
+
+        .upload-form {
+          grid-template-columns: 1fr;
+        }
+
+        .input-group.full-width {
+          grid-column: span 1;
+        }
+
+        #upload-btn {
+          grid-column: span 1;
+        }
+      }
+
+      /* Action buttons for edit and delete */
+      .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        margin-top: 5px;
+      }
+      .edit-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .edit-btn:hover {
+        background-color: #2980b9;
+      }
+      .delete-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .delete-btn:hover {
+        background-color: #c0392b;
+      }
+
+      /* Modal styles for edit form */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 50%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        animation: slideDown 0.3s ease-out;
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      .close-btn {
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .close-btn:hover {
+        color: #e74c3c;
+      }
+
+      /* Animation for modal */
+      @keyframes slideDown {
+        from {
+          transform: translateY(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Delete confirmation dialog */
+      .delete-confirm-dialog {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .delete-confirm-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 30%;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+      .delete-confirm-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .cancel-btn {
+        background-color: #7f8c8d;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .confirm-delete-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      /* Animation for fade in */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="/static/images/logo.png" alt="E-Library Logo" />
+      </div>
+      <nav>
+        <a href="/home">Home</a>
+        <a href="/about">About</a>
+        <a href="#" class="library">My Library</a>
+        <a href="/feedback">Feedback</a>
+        <a href="/contact">Contact Us</a>
+        <a href="/logout">Logout</a>
+      </nav>
+    </header>
+
+    <!-- Modernized Upload Book Section -->
+    <div class="upload-container">
+      <h2>Upload a Book</h2>
+      <form method="POST" enctype="multipart/form-data" class="upload-form">
+        {{ form.hidden_tag() }}
+        <!-- CSRF Protection -->
+
+        <div class="input-group">
+          <label for="book_name">📖 Book Name</label>
+          {{ form.book_name(class="form-control",
+          placeholder="Enter-book-title") }}
+        </div>
+
+        <div class="input-group">
+          <label for="author">✍ Author</label>
+          {{ form.author(class="form-control", placeholder="Enter author's
+          name") }}
+        </div>
+
+        <div class="input-group">
+          <label for="category">📚 Category</label>
+          {{ form.category(class="form-control") }}
+        </div>
+
+        <div class="input-group">
+          <label for="image_url">🖼 Book Cover URL</label>
+          {{ form.image_url(class="form-control", placeholder="Enter URL for
+          book cover image") }}
+        </div>
+
+        <div class="input-group full-width">
+          <label for="description">📝 Description</label>
+          {{ form.description(class="form-control", placeholder="Write a brief
+          description", rows="4") }}
+        </div>
+
+        <div class="file-upload">
+          <div class="file-input-container">
+            <div class="file-icon">📚</div>
+            <p class="primary-text">Drag & drop your file here</p>
+            <p>or click to browse files</p>
+            {{ form.book(id="book-upload") }}
+          </div>
+          <p id="file-name">No file selected</p>
+        </div>
+
+        <button id="upload-btn" type="submit">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          Upload Book
+        </button>
+      </form>
+    </div>
+
+    <!-- Uploaded Books Section -->
+    <div class="library-container">
+      <h2>Uploaded Books</h2>
+      <div class="book-list">
+        {% if uploaded_books %} {% for book in uploaded_books %}
+        <div class="book-item" data-book-id="{{ book.id }}">
+          {% if book.image_url %}
+          <img
+            src="{{ book.image_url }}"
+            alt="{{ book.title }} Cover"
+            class="book-cover"
+          />
+          {% else %}
+          <img src="/static/images/fantasy.webp" alt="Book Cover" />
+          {% endif %} {% for book in books %}
+          <div>
+            <h3>{{ book.title }}</h3>
+            <p>Author: {{ book.author }}</p>
+
+            {% if book.cover_url %}
+            <img src="{{ book.cover_url }}" alt="Book Cover" width="150" />
+            {% else %}
+            <p>No cover available</p>
+            {% endif %}
+          </div>
+          {% endfor %}
+
+          <p><strong>{{ book.title }}</strong></p>
+          <p><strong>Author:</strong> {{ book.author }}</p>
+          <p><strong>Category:</strong> {{ book.category }}</p>
+          <a
+            href="{{ url_for('static', filename='uploads/' + book.filename) }}"
+            download
+          >
+            <button class="download-btn">Download</button>
+          </a>
+          <div class="action-buttons">
+            <button
+              class="edit-btn"
+              onclick="openEditModal('{{ book.id }}', '{{ book.title }}', '{{ book.author }}', '{{ book.category }}', '{{ book.description }}', '{{ book.image_url }}')"
+            >
+              Edit
+            </button>
+            <button
+              class="delete-btn"
+              onclick="openDeleteConfirmation('{{ book.id }}', '{{ book.title }}')"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+        {% endfor %} {% else %}
+        <p>No books uploaded yet.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Edit Book Modal -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Edit Book</h3>
+          <span class="close-btn" onclick="closeEditModal()">&times;</span>
+        </div>
+        <form
+          id="edit-book-form"
+          method="POST"
+          action="/edit-book"
+          class="upload-form"
+        >
+          <input type="hidden" id="edit-book-id" name="book_id" />
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+          <div class="input-group">
+            <label for="edit-book-name">📖 Book Name</label>
+            <input
+              type="text"
+              id="edit-book-name"
+              name="book_name"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="edit-author">✍ Author</label>
+            <input
+              type="text"
+              id="edit-author"
+              name="author"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="edit-category">📚 Category</label>
+            <select id="edit-category" name="category" class="form-control">
+              {% for value, label in form.category.choices %}
+              <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="edit-description">📝 Description</label>
+            <textarea
+              id="edit-description"
+              name="description"
+              class="form-control"
+            ></textarea>
+          </div>
+
+          <div class="input-group">
+            <label for="edit-image-url">🖼 Book Cover URL</label>
+            <input
+              type="text"
+              id="edit-image-url"
+              name="image_url"
+              class="form-control"
+            />
+          </div>
+
+          <button type="submit" id="update-btn" class="download-btn">
+            Update Book
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Dialog -->
+    <div id="deleteConfirmDialog" class="delete-confirm-dialog">
+      <div class="delete-confirm-content">
+        <h3>Confirm Delete</h3>
+        <p>
+          Are you sure you want to delete "<span id="delete-book-title"></span
+          >"?
+        </p>
+        <p>This action cannot be undone.</p>
+        <div class="delete-confirm-buttons">
+          <button class="cancel-btn" onclick="closeDeleteConfirmation()">
+            Cancel
+          </button>
+          <form id="delete-book-form" method="POST" action="/delete-book">
+            <input type="hidden" id="delete-book-id" name="book_id" />
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button type="submit" class="confirm-delete-btn">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // File upload display
+      document
+        .getElementById("book-upload")
+        .addEventListener("change", function () {
+          let fileName = this.files[0]
+            ? this.files[0].name
+            : "No file selected";
+          document.getElementById("file-name").textContent = fileName;
+        });
+
+      // Edit modal functions
+      function openEditModal(
+        bookId,
+        title,
+        author,
+        category,
+        description,
+        imageUrl
+      ) {
+        document.getElementById("edit-book-id").value = bookId;
+        document.getElementById("edit-book-name").value = title;
+        document.getElementById("edit-author").value = author;
+        document.getElementById("edit-category").value = category;
+        document.getElementById("edit-description").value = description || "";
+        document.getElementById("edit-image-url").value = imageUrl || "";
+        document.getElementById("editModal").style.display = "block";
+      }
+
+      function closeEditModal() {
+        document.getElementById("editModal").style.display = "none";
+      }
+
+      // Delete confirmation functions
+      function openDeleteConfirmation(bookId, title) {
+        document.getElementById("delete-book-id").value = bookId;
+        document.getElementById("delete-book-title").textContent = title;
+        document.getElementById("deleteConfirmDialog").style.display = "block";
+      }
+
+      function closeDeleteConfirmation() {
+        document.getElementById("deleteConfirmDialog").style.display = "none";
+      }
+
+      // Close modals when clicking outside of them
+      window.onclick = function (event) {
+        const editModal = document.getElementById("editModal");
+        const deleteDialog = document.getElementById("deleteConfirmDialog");
+
+        if (event.target === editModal) {
+          closeEditModal();
+        }
+
+        if (event.target === deleteDialog) {
+          closeDeleteConfirmation();
+        }
+      };
+    </script>
+  </body>
+</html>

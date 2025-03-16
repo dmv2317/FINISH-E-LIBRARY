@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <title>About - E-Library</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Header Section */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: azure;
+            padding: 15px 20px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 80px;
+            border-radius: 50px;
+            margin-right: 15px;
+        
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 0px;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        nav a:hover {
+            color: #ff477e;
+            transform: scale(1.1);
+          }
+
+        .about {
+            background-color: white;
+            color: black;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+        .search-bar input {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            width: 200px;
+        }
+        .search-bar button {
+            padding: 10px;
+            background-color: #34495e;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: #2c3e50;
+        }
+
+        .about-content {
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .about-content h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        .about-content p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .team-section {
+            margin-top: 30px;
+        }
+        .team-section h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .team-member {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .team-member img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .team-member p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="E-Library Logo">
+            
+        </div>
+        
+        <nav>
+            <a href="/home">Home</a>
+            <a href="#" class="about">About</a>
+            <a href="/my-library">My-library</a>
+            <a href="/feedback">Feedback</a>
+            <a href="/contact">Contact Us</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+
+    <div class="about-content">
+        <h2>About E-Library</h2>
+        <p>Welcome to E-Library, your ultimate digital library. We offer a wide range of books, resources, and tools for avid readers, students, and professionals. Whether you're looking for the latest bestsellers, research materials, or just a good story to enjoy, E-Library is your go-to place for all things literary.</p>
+        <p>An e-library is a digital platform offering access to a wide range of books and resources online. It allows users to explore, download, and read books across various genres anytime, anywhere. Features like user registration, personalized bookshelves, and feedback systems enhance the experience. The platform promotes digital literacy and makes knowledge easily accessible. This project supports lifelong learning and modernizes access to educational materials.
+       
+            <span><p> 1. Online Access: Enables users to access a vast collection of books and resources digitally.</span><br>
+            <span>2. User Features: Includes registration, personalized bookshelves, and feedback options for a tailored experience.</span><br>
+            <span> 3. Convenience: Allows reading and downloading books anytime, anywhere, on multiple devices.</span><br>
+            <span> 4. Diverse Genres: Offers a wide range of genres, from fiction and non-fiction to academic and technical books.</span><br>
+            <span> 5. Educational Support: Promotes digital literacy and lifelong learning by making knowledge easily accessible to all.</p></span><br>
+            <div class="team-section">
+            <h3>Meet the Team</h3>
+            <div class="team-member">
+                <img src="https://via.placeholder.com/50" alt="Team Member 1">
+                <p><strong>M. Vasanth kumar B.Sc(CS)</strong> - Founder & CEO</p>
+            </div>
+            <div class="team-member">
+                <img src="https://via.placeholder.com/50" alt="Team Member 2">
+                <p><strong>Manikandan M B.Sc(CS)</strong> - CTO</p>
+            </div>
+            <div class="team-member">
+                <img src="https://via.placeholder.com/50" alt="Team Member 3">
+                <p><strong>S. Dhamodharan B.Sc(CS)</strong> - Lead Developer</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function search() {
+            const query = document.querySelector('.search-bar input').value;
+            alert(query ? `Searching for: ${query}` : 'Please enter a search term.');
+        }
+    </script>
+</body>
+</html>

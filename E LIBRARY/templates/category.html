@@ -1,0 +1,20 @@
+{% extends "base.html" %}  
+
+{% block content %}
+    <h2>{{ category }} Books</h2>
+
+    {% if books %}
+        <ul>
+            {% for book in books %}
+                <li>
+                    <strong>{{ book.title }}</strong> by {{ book.author }}
+                    <br>
+                    <a href="{{ url_for('download_book', book_id=book.id) }}">Download</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books available in this category.</p>
+    {% endif %}
+
+{% endblock %}
